@@ -1,0 +1,33 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0 14px;
+  transition: 0.15s;
+}
+
+.wrapper:focus-within {
+  border-color: var(--primary);
+}
+
+.wrapper .icon {
+  color: var(--sub);
+}
+
+.input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 12px 0;
+  font-size: 15px;
+  color: var(--text);
+  min-width: 0;
+}
+
+.input::placeholder {
+  color: var(--sub);
+}

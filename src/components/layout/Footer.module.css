@@ -1,0 +1,25 @@
+.footer {
+  border-top: 1px solid var(--border);
+  margin-top: 64px;
+  padding: 32px 0 40px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.brand {
+  font-weight: 700;
+  color: var(--title);
+}
+
+.disclaimer {
+  font-size: 13px;
+  color: var(--sub);
+  line-height: 1.6;
+  margin-top: 16px;
+}

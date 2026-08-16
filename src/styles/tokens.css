@@ -1,0 +1,31 @@
+/* ==========================================================================
+   디자인 시스템 토큰 — 색 조합: 토스 · 클린 블루
+   ========================================================================== */
+:root {
+  /* 색상 */
+  --primary: #3182f6;
+  --primary-dark: #1b64da;
+  --text: #4e5968;
+  --sub: #8b95a1;
+  --bg: #f2f4f6;
+  --surface: #ffffff;
+  --border: #e5e8eb;
+
+  /* 보조 색상 (상승/하락, 상태 표시용) */
+  --positive: #f04452;
+  --negative: #3182f6;
+  --title: #191f28;
+
+  /* 폰트 */
+  --font-family: 'Noto Sans KR', sans-serif;
+
+  /* 간격 / 레이아웃 */
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --container-width: 1200px;
+
+  /* 그림자 */
+  --shadow-card: 0 2px 8px rgba(25, 31, 40, 0.06);
+  --shadow-card-hover: 0 8px 20px rgba(25, 31, 40, 0.1);
+}

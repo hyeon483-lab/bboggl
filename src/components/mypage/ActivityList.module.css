@@ -1,0 +1,48 @@
+.item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.iconWrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--sub);
+  flex-shrink: 0;
+}
+
+.iconWrap.favorite {
+  color: var(--positive);
+}
+
+.body {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  font-size: 14.5px;
+  color: var(--text);
+}
+
+.title b {
+  color: var(--title);
+  font-weight: 700;
+}
+
+.date {
+  font-size: 12.5px;
+  color: var(--sub);
+  margin-top: 2px;
+}

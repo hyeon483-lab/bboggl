@@ -1,0 +1,132 @@
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13.5px;
+  color: var(--sub);
+  margin-bottom: 16px;
+}
+
+.back:hover {
+  color: var(--text);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.logo {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.identity {
+  flex: 1;
+  min-width: 0;
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.nameKo {
+  font-size: 24px;
+}
+
+.ticker {
+  font-size: 14px;
+  color: var(--sub);
+  font-weight: 500;
+}
+
+.nameEn {
+  color: var(--sub);
+  font-size: 14px;
+  margin-top: 2px;
+}
+
+.tags {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.priceBlock {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.price {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--title);
+}
+
+.change {
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px;
+  margin-top: 4px;
+}
+
+.chartCard {
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.chartHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.sectionTitle {
+  font-size: 16px;
+}
+
+.financeCard {
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.tabsCard {
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+@media (max-width: 640px) {
+  .header {
+    flex-direction: column;
+  }
+  .priceBlock {
+    text-align: left;
+  }
+  .change {
+    justify-content: flex-start;
+  }
+}

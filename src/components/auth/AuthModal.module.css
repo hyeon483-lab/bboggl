@@ -1,0 +1,85 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(25, 31, 40, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 16px;
+}
+
+.modal {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  width: 100%;
+  max-width: 380px;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 19px;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: var(--sub);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.field {
+  margin-bottom: 12px;
+}
+
+.label {
+  display: block;
+  font-size: 13px;
+  color: var(--sub);
+  margin-bottom: 6px;
+}
+
+.error {
+  font-size: 13px;
+  color: var(--positive);
+  margin: 4px 0 12px;
+}
+
+.notice {
+  font-size: 13px;
+  color: var(--primary-dark);
+  background: rgba(49, 130, 246, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin: 4px 0 12px;
+}
+
+.submit {
+  width: 100%;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.switchRow {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 13.5px;
+  color: var(--sub);
+}
+
+.switchBtn {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0 0 0 4px;
+}

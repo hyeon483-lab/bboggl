@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /mypage
+
+Sitemap: https://10kanalysiswise.com/sitemap.xml

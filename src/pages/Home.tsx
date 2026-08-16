@@ -8,11 +8,18 @@ import { mockCompanies } from '../data/mockCompanies';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 import styles from './Home.module.css';
 
+const avgChangePercent =
+  mockCompanies.reduce((sum, c) => sum + c.changePercent, 0) / mockCompanies.length;
+const latestPriceAsOf = mockCompanies
+  .map((c) => c.priceAsOf)
+  .sort()
+  .at(-1);
+
 const MARKET_STATS = [
   { label: '수록 기업 수', value: `${mockCompanies.length}개` },
   { label: '오늘 상승 기업', value: `${mockCompanies.filter((c) => c.changePercent >= 0).length}개` },
-  { label: '평균 등락률', value: '+1.15%' },
-  { label: '최근 업데이트', value: '2026-08-16' },
+  { label: '평균 등락률', value: `${avgChangePercent >= 0 ? '+' : ''}${avgChangePercent.toFixed(2)}%` },
+  { label: '주가 기준일', value: latestPriceAsOf ?? '-' },
 ];
 
 export default function Home() {

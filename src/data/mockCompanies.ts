@@ -1,10 +1,19 @@
 import type { Company } from '../types/company';
+import pricesData from './prices.json';
+
+type PriceData = Pick<Company, 'price' | 'changePercent' | 'marketCapB' | 'priceAsOf' | 'priceHistory'>;
+type CompanyMeta = Omit<Company, keyof PriceData>;
+
+const prices = pricesData as Record<string, PriceData>;
+
+const EMPTY_PRICE: PriceData = { price: 0, changePercent: 0, marketCapB: 0, priceAsOf: '-', priceHistory: [] };
 
 /**
- * 종가·시가총액은 Google Finance 실데이터(2026-08-14 종가 기준)를 반영했습니다.
- * 그 외 재무지표·요약·스토리 등은 아직 서비스 데모용 예시 데이터입니다.
+ * 종가·시가총액·주가 추이는 매 거래일 마감 후 scripts/update-prices.mjs가
+ * Finnhub에서 받아와 src/data/prices.json에 채워 넣습니다 (GitHub Actions로 자동화).
+ * 여기 있는 필드들은 기업 소개·재무지표 등 사람이 직접 채우는 정보입니다.
  */
-export const mockCompanies: Company[] = [
+const COMPANY_META: CompanyMeta[] = [
   {
     ticker: 'AAPL',
     nameKo: '애플',
@@ -12,13 +21,8 @@ export const mockCompanies: Company[] = [
     sector: '테크',
     logoInitial: 'A',
     logoColor: '#4E5968',
-    price: 305.93,
-    changePercent: 0.22,
-    marketCapB: 4460,
-    priceAsOf: '2026-08-14',
     summary: '아이폰을 중심으로 한 하드웨어와 서비스 생태계를 결합한 소비자 테크 기업',
     tags: ['하드웨어', '서비스', '생태계'],
-    priceHistory: [242.59, 253.37, 231.81, 262.8, 283.02, 276.28, 295.15, 305.93],
     financials: [
       { label: '매출 (TTM)', value: '$391.0B' },
       { label: '영업이익률', value: '31.5%' },
@@ -35,13 +39,8 @@ export const mockCompanies: Company[] = [
     sector: '자동차',
     logoInitial: 'T',
     logoColor: '#F04452',
-    price: 342.27,
-    changePercent: 0.68,
-    marketCapB: 1070,
-    priceAsOf: '2026-08-14',
     summary: '전기차와 에너지 저장, 자율주행 소프트웨어를 함께 개발하는 모빌리티 기업',
     tags: ['전기차', '자율주행', '에너지저장'],
-    priceHistory: [390.72, 359.46, 382.9, 328.2, 309.45, 320.39, 350.08, 342.27],
     financials: [
       { label: '매출 (TTM)', value: '$97.7B' },
       { label: '영업이익률', value: '7.2%' },
@@ -58,13 +57,8 @@ export const mockCompanies: Company[] = [
     sector: '테크',
     logoInitial: 'M',
     logoColor: '#3182F6',
-    price: 495.4,
-    changePercent: -0.3,
-    marketCapB: 3680,
-    priceAsOf: '2026-08-14',
     summary: '클라우드(Azure)와 생산성 소프트웨어, AI 서비스를 축으로 하는 엔터프라이즈 테크 기업',
     tags: ['클라우드', 'AI', 'SaaS'],
-    priceHistory: [434.17, 445.3, 456.44, 450.87, 467.57, 484.27, 489.83, 495.4],
     financials: [
       { label: '매출 (TTM)', value: '$254.2B' },
       { label: '영업이익률', value: '44.6%' },
@@ -81,13 +75,8 @@ export const mockCompanies: Company[] = [
     sector: '반도체',
     logoInitial: 'N',
     logoColor: '#1B64DA',
-    price: 225.16,
-    changePercent: -0.06,
-    marketCapB: 5450,
-    priceAsOf: '2026-08-14',
     summary: 'AI 학습·추론용 GPU와 데이터센터 플랫폼을 주력으로 하는 반도체 설계 기업',
     tags: ['GPU', 'AI 인프라', '데이터센터'],
-    priceHistory: [167.11, 179.42, 207.57, 193.5, 219.88, 212.85, 228.68, 225.16],
     financials: [
       { label: '매출 (TTM)', value: '$113.3B' },
       { label: '영업이익률', value: '62.1%' },
@@ -104,13 +93,8 @@ export const mockCompanies: Company[] = [
     sector: '이커머스',
     logoInitial: 'A',
     logoColor: '#F2A93B',
-    price: 262.65,
-    changePercent: -0.94,
-    marketCapB: 2830,
-    priceAsOf: '2026-08-14',
     summary: '이커머스와 클라우드(AWS), 광고를 함께 운영하는 멀티 사업 플랫폼 기업',
     tags: ['AWS', '광고', '풀필먼트'],
-    priceHistory: [245.8, 238.77, 255.63, 249.81, 266.86, 259.84, 264.05, 262.65],
     financials: [
       { label: '매출 (TTM)', value: '$620.1B' },
       { label: '영업이익률', value: '10.8%' },
@@ -127,13 +111,8 @@ export const mockCompanies: Company[] = [
     sector: '전력·에너지',
     logoInitial: 'V',
     logoColor: '#0F9D58',
-    price: 148.13,
-    changePercent: 1.18,
-    marketCapB: 49.72,
-    priceAsOf: '2026-08-14',
     summary: '발전·소매 전력 판매를 아우르는 미국 최대 규모의 통합 전력 회사',
     tags: ['전력', '원자력', 'AI 전력수요'],
-    priceHistory: [77.96, 92.58, 107.2, 102.33, 126.69, 124.74, 141.31, 148.13],
     financials: [
       { label: '매출 (TTM)', value: '$17.1B' },
       { label: '영업이익률', value: '18.9%' },
@@ -144,6 +123,11 @@ export const mockCompanies: Company[] = [
     lastAnalyzedAt: '2026-08-16',
   },
 ];
+
+export const mockCompanies: Company[] = COMPANY_META.map((meta) => ({
+  ...meta,
+  ...(prices[meta.ticker] ?? EMPTY_PRICE),
+}));
 
 export function getCompanyByTicker(ticker: string): Company | undefined {
   return mockCompanies.find((c) => c.ticker.toLowerCase() === ticker.toLowerCase());

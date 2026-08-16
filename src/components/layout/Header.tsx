@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import Icon from '../common/Icon';
 import Input from '../common/Input';
 import Button from '../common/Button';
 import { useAuth } from '../../context/AuthContext';
 import { useAuthModal } from '../../context/AuthModalContext';
+import { useContactModal } from '../../context/ContactModalContext';
+import { CONTACT_LABELS } from '../../lib/contact';
 import styles from './Header.module.css';
 
 const NAV_ITEMS = [
@@ -14,10 +16,24 @@ const NAV_ITEMS = [
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [contactMenuOpen, setContactMenuOpen] = useState(false);
   const [keyword, setKeyword] = useState('');
   const navigate = useNavigate();
   const { user, profile } = useAuth();
   const { openAuthModal } = useAuthModal();
+  const { openContactModal } = useContactModal();
+  const contactMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!contactMenuOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (contactMenuRef.current && !contactMenuRef.current.contains(e.target as Node)) {
+        setContactMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [contactMenuOpen]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,6 +76,32 @@ export default function Header() {
         </form>
 
         <div className={styles.right}>
+          <div className={styles.contactWrap} ref={contactMenuRef}>
+            <button
+              className={styles.iconBtn}
+              aria-label="문의하기"
+              onClick={() => setContactMenuOpen((v) => !v)}
+            >
+              <Icon name="message-circle" size={20} />
+            </button>
+            {contactMenuOpen && (
+              <div className={styles.contactMenu}>
+                {(['add', 'update'] as const).map((type) => (
+                  <button
+                    key={type}
+                    className={styles.contactMenuItem}
+                    onClick={() => {
+                      openContactModal(type);
+                      setContactMenuOpen(false);
+                    }}
+                  >
+                    {CONTACT_LABELS[type]}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
           <button className={styles.iconBtn} aria-label="알림">
             <Icon name="bell" size={20} />
           </button>
@@ -117,6 +159,19 @@ export default function Header() {
                 마이페이지
               </NavLink>
             )}
+            {(['add', 'update'] as const).map((type) => (
+              <button
+                key={type}
+                className={styles.navLink}
+                style={{ textAlign: 'left' }}
+                onClick={() => {
+                  openContactModal(type);
+                  setMobileOpen(false);
+                }}
+              >
+                {CONTACT_LABELS[type]}
+              </button>
+            ))}
           </div>
         </div>
       )}

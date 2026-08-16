@@ -65,6 +65,7 @@ const PATHS: Record<string, ReactNode> = {
     </>
   ),
   bookmark: <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />,
+  'message-circle': <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />,
   bell: (
     <>
       <path d="M10.268 21a2 2 0 0 0 3.464 0" />

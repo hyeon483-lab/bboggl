@@ -27,8 +27,19 @@ const prices = JSON.parse(readFileSync(pricesPath, 'utf-8'));
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function fetchJson(url) {
-  const res = await fetch(url);
+  const res = await fetch(url, { redirect: 'manual' });
+
+  if (res.status >= 300 && res.status < 400) {
+    // Finnhub는 API 키가 잘못되면 에러 JSON 대신 자기 홈페이지로 302 리다이렉트한다.
+    throw new Error('API 키가 잘못됐거나 만료됐어요 (Finnhub가 요청을 거부하고 리다이렉트함)');
+  }
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+  const contentType = res.headers.get('content-type') ?? '';
+  if (!contentType.includes('application/json')) {
+    throw new Error(`예상치 못한 응답 형식(${contentType || '알 수 없음'}) — API 키를 확인해주세요`);
+  }
+
   return res.json();
 }
 

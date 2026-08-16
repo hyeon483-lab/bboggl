@@ -3,7 +3,7 @@ import type { Company } from '../../types/company';
 import AnalysisCardViewer from './AnalysisCardViewer';
 import styles from './AnalysisTabs.module.css';
 
-const TABS = ['핵심 요약', '스토리', '체크포인트'] as const;
+const TABS = ['핵심 요약', '스토리', '역DCF 가격 판독'] as const;
 type Tab = (typeof TABS)[number];
 
 export default function AnalysisTabs({ company }: { company: Company }) {
@@ -25,13 +25,19 @@ export default function AnalysisTabs({ company }: { company: Company }) {
 
       <div className={styles.content}>
         {active === '핵심 요약' && (
-          <p>
-            {company.nameKo}({company.ticker})은(는) {company.sector} 섹터에서 {company.summary}
-            입니다. 최근 분석 기준 시가총액은 ${company.marketCapB.toLocaleString()}B 수준입니다.
-          </p>
+          <AnalysisCardViewer
+            ticker={company.ticker}
+            type="company_decoder"
+            fallback={
+              <p>
+                {company.nameKo}({company.ticker})은(는) {company.sector} 섹터에서 {company.summary}
+                입니다. 최근 분석 기준 시가총액은 ${company.marketCapB.toLocaleString()}B 수준입니다.
+              </p>
+            }
+          />
         )}
         {active === '스토리' && <p>{company.story}</p>}
-        {active === '체크포인트' && <AnalysisCardViewer ticker={company.ticker} />}
+        {active === '역DCF 가격 판독' && <AnalysisCardViewer ticker={company.ticker} type="price_decoder" />}
       </div>
     </div>
   );

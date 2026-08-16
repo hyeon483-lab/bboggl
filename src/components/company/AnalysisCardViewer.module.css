@@ -1,31 +1,3 @@
-.tabs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.tab {
-  padding: 8px 14px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text);
-  font-size: 13.5px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: 0.15s;
-}
-
-.tab:hover {
-  background: var(--bg);
-}
-
-.tabActive {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: #fff;
-}
-
 .state {
   padding: 40px 4px;
   text-align: center;

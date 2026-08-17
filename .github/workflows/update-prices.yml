@@ -24,8 +24,6 @@ jobs:
         run: npm ci
 
       - name: Fetch latest prices
-        env:
-          FMP_API_KEY: ${{ secrets.FMP_API_KEY }}
         run: node scripts/update-prices.mjs
 
       - name: Commit and push if changed

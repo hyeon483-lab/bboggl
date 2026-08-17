@@ -10,7 +10,7 @@ const EMPTY_PRICE: PriceData = { price: 0, changePercent: 0, marketCapB: 0, pric
 
 /**
  * 종가·시가총액·주가 추이는 매 거래일 마감 후 scripts/update-prices.mjs가
- * Financial Modeling Prep에서 받아와 src/data/prices.json에 채워 넣습니다 (GitHub Actions로 자동화).
+ * Yahoo Finance에서 받아와 src/data/prices.json에 채워 넣습니다 (GitHub Actions로 자동화).
  * 여기 있는 필드들은 기업 소개·재무지표 등 사람이 직접 채우는 정보입니다.
  */
 const COMPANY_META: CompanyMeta[] = [

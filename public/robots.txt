@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /mypage
 
-Sitemap: https://10kanalysiswise.com/sitemap.xml
+Sitemap: https://10kanalysiswise.vercel.app/sitemap.xml

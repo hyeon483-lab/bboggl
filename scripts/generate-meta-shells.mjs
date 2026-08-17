@@ -29,7 +29,7 @@ if (!existsSync(templatePath)) {
 
 const template = readFileSync(templatePath, 'utf-8');
 const SITE = 'Bboggl';
-const SITE_URL = 'https://10kanalysiswise.com';
+const SITE_URL = 'https://10kanalysiswise.vercel.app';
 
 // 더미 기업 데이터. src/data/mockCompanies.ts와 동일하게 유지해주세요.
 // (이 스크립트는 순수 Node 스크립트라 TS 소스를 직접 import하지 않습니다.)
@@ -47,6 +47,16 @@ const routes = [
     path: 'companies',
     title: `기업 분석 목록 | ${SITE}`,
     description: '미국 상장기업을 섹터·시가총액·등락률로 검색하고 비교해보세요.',
+  },
+  {
+    path: 'about',
+    title: `소개 | ${SITE}`,
+    description: 'Bboggl이 어떤 사이트인지, 데이터를 어떻게 만드는지 소개합니다.',
+  },
+  {
+    path: 'privacy',
+    title: `개인정보처리방침 | ${SITE}`,
+    description: 'Bboggl이 수집하는 개인정보와 이용 목적을 안내합니다.',
   },
   ...COMPANIES.map((c) => ({
     path: `companies/${c.ticker}`,
@@ -98,6 +108,8 @@ const sitemapUrls = [
   { path: '', changefreq: 'daily', priority: '1.0' },
   { path: 'companies', changefreq: 'daily', priority: '0.9' },
   ...COMPANIES.map((c) => ({ path: `companies/${c.ticker}`, changefreq: 'weekly', priority: '0.8' })),
+  { path: 'about', changefreq: 'monthly', priority: '0.3' },
+  { path: 'privacy', changefreq: 'monthly', priority: '0.2' },
 ];
 
 const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>

@@ -1,0 +1,27 @@
+.wrap {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.code {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+
+.title {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.desc {
+  color: var(--sub);
+  margin-bottom: 28px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}

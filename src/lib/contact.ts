@@ -14,6 +14,8 @@ export async function submitContact(payload: {
   type: ContactType;
   message: string;
   email?: string;
+  website?: string;
+  elapsedMs?: number;
 }): Promise<{ error: string | null }> {
   try {
     const res = await fetch('/api/contact', {

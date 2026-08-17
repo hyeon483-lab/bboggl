@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Input from '../common/Input';
 import Button from '../common/Button';
 import Icon from '../common/Icon';
@@ -15,9 +15,11 @@ export default function ContactModal({ type, onClose }: ContactModalProps) {
   const { user } = useAuth();
   const [message, setMessage] = useState('');
   const [email, setEmail] = useState(user?.email ?? '');
+  const [website, setWebsite] = useState(''); // 허니팟: 사람 눈엔 안 보이고 봇만 채움
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
+  const openedAt = useRef(Date.now());
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,7 +30,13 @@ export default function ContactModal({ type, onClose }: ContactModalProps) {
 
     setSubmitting(true);
     setError(null);
-    const result = await submitContact({ type, message: message.trim(), email: email.trim() || undefined });
+    const result = await submitContact({
+      type,
+      message: message.trim(),
+      email: email.trim() || undefined,
+      website,
+      elapsedMs: Date.now() - openedAt.current,
+    });
     setSubmitting(false);
 
     if (result.error) {
@@ -60,6 +68,17 @@ export default function ContactModal({ type, onClose }: ContactModalProps) {
           </>
         ) : (
           <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              name="website"
+              value={website}
+              onChange={(e) => setWebsite(e.target.value)}
+              className={styles.honeypot}
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+            />
+
             <div className={styles.field}>
               <label className={styles.label} htmlFor="contact-message">
                 내용

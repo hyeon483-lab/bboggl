@@ -12,9 +12,30 @@
   gap: 12px;
 }
 
+.brandGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .brand {
   font-weight: 700;
   color: var(--title);
+}
+
+.links {
+  display: flex;
+  gap: 16px;
+}
+
+.links a {
+  font-size: 13.5px;
+  color: var(--sub);
+}
+
+.links a:hover {
+  color: var(--text);
 }
 
 .disclaimer {

@@ -20,11 +20,17 @@ export default async function handler(req: Request): Promise<Response> {
     return json({ error: '서버 설정 오류로 메일을 보낼 수 없어요.' }, 500);
   }
 
-  let body: { type?: string; message?: string; email?: string };
+  let body: { type?: string; message?: string; email?: string; website?: string; elapsedMs?: number };
   try {
     body = await req.json();
   } catch {
     return json({ error: '잘못된 요청이에요.' }, 400);
+  }
+
+  // 허니팟(사람에겐 안 보이는 필드)이 채워져 있거나 폼을 연 지 1초도 안 돼 제출됐으면 봇으로 보고
+  // 실제 발송 없이 성공한 척 응답한다 (봇에게 탐지 사실을 알려주지 않기 위함).
+  if (body.website || (typeof body.elapsedMs === 'number' && body.elapsedMs < 1000)) {
+    return json({ ok: true });
   }
 
   const typeLabel = body.type ? CONTACT_LABELS[body.type] : undefined;

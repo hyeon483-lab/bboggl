@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styles from './Footer.module.css';
 
 export default function Footer() {
@@ -5,8 +6,14 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className="container">
         <div className={styles.row}>
-          <span className={styles.brand}>🍲 Bboggl</span>
-          <span className="text-sub">미국 상장기업 분석 리포트</span>
+          <div className={styles.brandGroup}>
+            <span className={styles.brand}>🍲 Bboggl</span>
+            <span className="text-sub">미국 상장기업 분석 리포트</span>
+          </div>
+          <nav className={styles.links}>
+            <Link to="/about">소개</Link>
+            <Link to="/privacy">개인정보처리방침</Link>
+          </nav>
         </div>
         <p className={styles.disclaimer}>
           주가·시가총액은 매 거래일 마감 후 1일 1회 자동으로 갱신됩니다. 상장기업 분석은 실제 10-K

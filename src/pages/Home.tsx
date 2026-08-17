@@ -28,7 +28,7 @@ export default function Home() {
 
   useDocumentMeta({
     title: 'Bboggl — 미국 상장기업 10-K 기반 분석',
-    description: '클로드가 정리한 10-K 공시자료를 바탕으로 미국 상장기업의 핵심을 한눈에 요약해드립니다.',
+    description: 'AI가 정리한 10-K 공시자료를 바탕으로 미국 상장기업의 핵심을 한눈에 요약해드립니다.',
   });
 
   const recentCompanies = [...mockCompanies]
@@ -47,7 +47,7 @@ export default function Home() {
           미국 상장기업, <span>10-K 기반</span>으로 한눈에
         </h1>
         <p className={styles.subtitle}>
-          클로드가 정리한 공시자료를 바탕으로 기업의 핵심을 요약해드려요.
+          AI가 정리한 공시자료를 바탕으로 기업의 핵심을 요약해드려요.
         </p>
         <form className={styles.heroSearch} onSubmit={handleSearch}>
           <Input

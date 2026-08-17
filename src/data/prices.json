@@ -1,56 +1,62 @@
 {
   "AAPL": {
-    "price": 305.93,
-    "changePercent": 0.21948946,
-    "marketCapB": 4464.7972864,
-    "priceAsOf": "2026-08-14",
+    "price": 305.59,
+    "changePercent": -0.11113534,
+    "marketCapB": 4459.835424768,
+    "priceAsOf": "2026-08-17",
     "priceHistory": [
-      305.93
+      305.93,
+      305.59
     ]
   },
   "TSLA": {
-    "price": 342.27,
-    "changePercent": 0.679491,
-    "marketCapB": 1351.811596288,
-    "priceAsOf": "2026-08-14",
+    "price": 339.3,
+    "changePercent": -0.86773634,
+    "marketCapB": 1340.08143872,
+    "priceAsOf": "2026-08-17",
     "priceHistory": [
-      342.27
+      342.27,
+      339.3
     ]
   },
   "MSFT": {
-    "price": 495.4,
-    "changePercent": -0.29786086,
-    "marketCapB": 3678.615371776,
-    "priceAsOf": "2026-08-14",
+    "price": 480.35,
+    "changePercent": -3.0379467,
+    "marketCapB": 3566.86102528,
+    "priceAsOf": "2026-08-17",
     "priceHistory": [
-      495.4
+      495.4,
+      480.35
     ]
   },
   "NVDA": {
-    "price": 225.16,
-    "changePercent": -0.0621391,
-    "marketCapB": 5453.600260096,
-    "priceAsOf": "2026-08-14",
+    "price": 225.01,
+    "changePercent": -0.06662336,
+    "marketCapB": 5449.966944256,
+    "priceAsOf": "2026-08-17",
     "priceHistory": [
-      225.16
+      225.16,
+      225.01
     ]
   },
   "AMZN": {
-    "price": 262.65,
-    "changePercent": -0.9353943,
-    "marketCapB": 2833.025073152,
-    "priceAsOf": "2026-08-14",
+    "price": 261.31,
+    "changePercent": -0.5101833,
+    "marketCapB": 2818.571501568,
+    "priceAsOf": "2026-08-17",
     "priceHistory": [
-      262.65
+      262.65,
+      261.31
     ]
   },
   "VST": {
-    "price": 148.13,
-    "changePercent": 1.1817,
-    "marketCapB": 49.717645312,
-    "priceAsOf": "2026-08-14",
+    "price": 146.11,
+    "changePercent": -1.36367,
+    "marketCapB": 49.039659008,
+    "priceAsOf": "2026-08-17",
     "priceHistory": [
-      148.13
+      148.13,
+      146.11
     ]
   }
 }

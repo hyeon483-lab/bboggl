@@ -1,8 +1,9 @@
 /**
  * 매 거래일 마감 후 GitHub Actions가 실행하는 스크립트.
- * Financial Modeling Prep(FMP)에서 종가·시가총액을 받아와 src/data/prices.json을 갱신한다.
- * 여러 종목을 콤마로 묶어 한 번에 조회할 수 있어서(/quote/AAPL,MSFT,...),
+ * Financial Modeling Prep(FMP)의 stable API에서 종가·시가총액을 받아와
+ * src/data/prices.json을 갱신한다. batch-quote는 여러 종목을 한 번에 조회할 수 있어서
  * 100개 이상으로 종목이 늘어나도 호출 1번으로 끝난다.
+ * (구 /api/v3/quote 벌크 조회는 무료 플랜에서 403으로 막혀서 stable API로 옮겼다.)
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -28,15 +29,22 @@ function toDateString(unixSeconds) {
   return new Date(unixSeconds * 1000).toISOString().slice(0, 10);
 }
 
-const url = `https://financialmodelingprep.com/api/v3/quote/${tickers.join(',')}?apikey=${API_KEY}`;
+const url = `https://financialmodelingprep.com/stable/batch-quote?symbols=${tickers.join(',')}&apikey=${API_KEY}`;
 const res = await fetch(url);
+const bodyText = await res.text();
 
 if (!res.ok) {
-  console.error(`[update-prices] FMP 응답 오류: HTTP ${res.status}`);
+  console.error(`[update-prices] FMP 응답 오류: HTTP ${res.status} — ${bodyText.slice(0, 300)}`);
   process.exit(1);
 }
 
-const body = await res.json();
+let body;
+try {
+  body = JSON.parse(bodyText);
+} catch {
+  console.error('[update-prices] FMP 응답이 JSON이 아니에요:', bodyText.slice(0, 300));
+  process.exit(1);
+}
 
 if (!Array.isArray(body)) {
   console.error('[update-prices] FMP 오류:', body?.['Error Message'] ?? JSON.stringify(body));
@@ -55,7 +63,7 @@ for (const ticker of tickers) {
   }
 
   const price = q.price;
-  const changePercent = q.changesPercentage ?? 0;
+  const changePercent = q.changesPercentage ?? q.changePercentage ?? 0;
   const marketCapB = q.marketCap ? q.marketCap / 1e9 : 0;
   const priceAsOf = q.timestamp ? toDateString(q.timestamp) : today;
 

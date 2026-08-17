@@ -83,7 +83,7 @@ export default function CompanyDetail() {
             {company.changePercent.toFixed(2)}%
           </div>
           <div className="text-sub" style={{ fontSize: 12, marginTop: 4 }}>
-            {company.priceAsOf} 종가 기준 (Google Finance)
+            {company.priceAsOf} 종가 기준 (Yahoo Finance)
           </div>
         </div>
       </div>

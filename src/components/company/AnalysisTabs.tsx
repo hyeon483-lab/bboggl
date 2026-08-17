@@ -36,7 +36,13 @@ export default function AnalysisTabs({ company }: { company: Company }) {
             }
           />
         )}
-        {active === '스토리' && <p>{company.story}</p>}
+        {active === '스토리' && (
+          <AnalysisCardViewer
+            ticker={company.ticker}
+            type="story_reader"
+            fallback={<p>{company.story}</p>}
+          />
+        )}
         {active === '역DCF 가격 판독' && <AnalysisCardViewer ticker={company.ticker} type="price_decoder" />}
       </div>
     </div>

@@ -1,7 +1,7 @@
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const BUCKET = 'Corporate analysis data (upload)';
 
-export type CardType = 'company_decoder' | 'price_decoder';
+export type CardType = 'company_decoder' | 'price_decoder' | 'story_reader';
 
 function cardFileName(ticker: string, type: CardType) {
   return `${ticker}_${type}_card.html`;

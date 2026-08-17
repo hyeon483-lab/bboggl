@@ -105,7 +105,7 @@ export default function Privacy() {
 
       <section className={styles.section}>
         <h2>6. 문의처</h2>
-        <p>개인정보 관련 문의: hyeon483@gmail.com</p>
+        <p>개인정보 관련 문의: chriskevin0707@gmail.com</p>
       </section>
 
       <section className={styles.section}>

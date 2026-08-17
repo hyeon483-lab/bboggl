@@ -34,7 +34,7 @@ export default function About() {
         <h2>운영자</h2>
         <p>
           개인이 만들고 운영하는 사이트예요. 사업자로 등록된 법인이 아니며, 문의는 이메일(
-          hyeon483@gmail.com)로 받고 있어요. 헤더의 문의 아이콘으로 &quot;분석기업 추가&quot;나
+          chriskevin0707@gmail.com)로 받고 있어요. 헤더의 문의 아이콘으로 &quot;분석기업 추가&quot;나
           &quot;업데이트 요청&quot;도 보낼 수 있어요.
         </p>
       </section>

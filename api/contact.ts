@@ -1,7 +1,7 @@
 export const config = { runtime: 'edge' };
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const TO_EMAIL = 'hyeon483@gmail.com';
+const TO_EMAIL = 'chriskevin0707@gmail.com';
 const FROM_EMAIL = 'Bboggl 문의 <onboarding@resend.dev>';
 const MAX_MESSAGE_LENGTH = 2000;
 

@@ -33,7 +33,7 @@ export default function Home() {
 
   const recentCompanies = [...mockCompanies]
     .sort((a, b) => (a.lastAnalyzedAt < b.lastAnalyzedAt ? 1 : -1))
-    .slice(0, 6);
+    .slice(0, 9);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();

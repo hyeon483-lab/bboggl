@@ -78,6 +78,7 @@ const COMPANIES = [
   { ticker: 'GOOGL', nameKo: '알파벳(구글)', summary: '검색·유튜브 광고를 핵심 수익원으로 클라우드와 AI 사업을 함께 키우는 인터넷 플랫폼 기업' },
   { ticker: 'AVGO', nameKo: '브로드컴', summary: '반도체와 인프라 소프트웨어(VMware)를 함께 판매하는 반도체·소프트웨어 복합 기업' },
   { ticker: 'META', nameKo: '메타', summary: '페이스북·인스타그램 광고를 핵심 수익원으로 AI와 메타버스에 대규모로 투자하는 소셜미디어 기업' },
+  { ticker: 'JPM', nameKo: 'JP모건체이스', summary: '예금·대출 이자수익과 투자은행·자산관리 수수료를 함께 운영하는 미국 최대 상업은행' },
 ];
 
 function escapeHtml(str) {

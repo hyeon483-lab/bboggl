@@ -280,6 +280,25 @@ const COMPANY_META: CompanyMeta[] = [
     lastAnalyzedAt: '2026-08-17',
     latestTenKYear: 2025,
   },
+  {
+    ticker: 'JPM',
+    nameKo: 'JP모건체이스',
+    nameEn: 'JPMorgan Chase & Co.',
+    sector: '금융',
+    logoInitial: 'J',
+    logoColor: '#0A2540',
+    summary: '예금·대출 이자수익과 투자은행·자산관리 수수료를 함께 운영하는 미국 최대 상업은행',
+    tags: ['상업은행', '투자은행', '자산관리'],
+    financials: [
+      { label: '매출 (TTM)', value: '$182.4B' },
+      { label: 'PER', value: '15.5x' },
+      { label: '배당수익률', value: '1.66%' },
+      { label: '순이자마진', value: '3.75%' },
+    ],
+    story: 'Basel III 자본규제 우려로 위축됐던 자사주매입이 규제 완화와 함께 3년 새 약 3배로 늘었고, 2025년 관세 충격에도 흔들리지 않고 사상 최대 수준의 순이익 흐름을 이어가고 있습니다.',
+    lastAnalyzedAt: '2026-08-18',
+    latestTenKYear: 2025,
+  },
 ];
 
 export const mockCompanies: Company[] = COMPANY_META.map((meta) => ({

@@ -6,10 +6,14 @@
  * 내려받은 뒤 JS가 실행되고 나서야 값이 바뀐다 — 카카오톡·트위터 링크 미리보기처럼
  * JS를 실행하지 않는 크롤러는 이 값을 절대 보지 못한다.
  *
- * 여기서는 실제 React 컴포넌트를 서버 렌더링하지 않고(SSR 없음), dist/index.html을
- * 라우트 개수만큼 복제해 <title>/description/OG 태그만 미리 박아 넣은 정적 shell을
- * dist/{route}/index.html 형태로 만든다. <div id="root">와 스크립트 태그는 그대로 두므로
- * 실제 화면은 지금과 동일하게 클라이언트 JS가 그린다.
+ * 여기서는 실제 React 컴포넌트를 서버 렌더링하지 않지만(정식 SSR 없음), dist/index.html을
+ * 라우트 개수만큼 복제해 <title>/description/OG 태그를 미리 박아 넣고, 추가로
+ * Supabase Storage에 업로드된 실제 분석 카드(company_decoder/story_reader/price_decoder)
+ * 텍스트를 빌드 시점에 가져와 <div id="root"> 안에 실제 텍스트로 함께 넣어준다.
+ * (JS를 실행하지 않는 크롤러/뷰소스 확인에서도 종목 분석 본문이 그대로 보이도록 하기 위함.)
+ *
+ * 클라이언트는 hydrateRoot가 아니라 createRoot를 쓰기 때문에(src/main.tsx), 접속 즉시
+ * 이 미리 넣어둔 텍스트를 지우고 React가 다시 그린다 — 실제 화면/동작은 기존과 동일하다.
  *
  * 정적 호스팅(Netlify/Vercel 등)이 "디렉터리 인덱스" 방식으로 /companies/AAPL 요청을
  * dist/companies/AAPL/index.html에 매핑해준다는 전제가 필요하다.
@@ -27,9 +31,35 @@ if (!existsSync(templatePath)) {
   process.exit(1);
 }
 
+// .env.local 값을 process.env에 채워준다. Vercel 빌드에서는 이미 환경변수가 설정되어
+// 있으므로 이 함수는 아무것도 하지 않는다 (기존 값을 덮어쓰지 않음).
+function loadDotEnvLocal() {
+  const envPath = join(__dirname, '..', '.env.local');
+  if (!existsSync(envPath)) return;
+  const content = readFileSync(envPath, 'utf-8');
+  for (const line of content.split('\n')) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const eq = trimmed.indexOf('=');
+    if (eq === -1) continue;
+    const key = trimmed.slice(0, eq).trim();
+    const value = trimmed.slice(eq + 1).trim();
+    if (!process.env[key]) process.env[key] = value;
+  }
+}
+loadDotEnvLocal();
+
 const template = readFileSync(templatePath, 'utf-8');
 const SITE = 'Bboggl';
 const SITE_URL = 'https://10kanalysiswise.vercel.app';
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
+const BUCKET = 'Corporate analysis data (upload)';
+
+const CARD_TYPES = [
+  { type: 'company_decoder', label: '핵심 요약' },
+  { type: 'story_reader', label: '스토리' },
+  { type: 'price_decoder', label: '역DCF 가격 판독' },
+];
 
 // 더미 기업 데이터. src/data/mockCompanies.ts와 동일하게 유지해주세요.
 // (이 스크립트는 순수 Node 스크립트라 TS 소스를 직접 import하지 않습니다.)
@@ -50,35 +80,67 @@ const COMPANIES = [
   { ticker: 'META', nameKo: '메타', summary: '페이스북·인스타그램 광고를 핵심 수익원으로 AI와 메타버스에 대규모로 투자하는 소셜미디어 기업' },
 ];
 
-const routes = [
-  {
-    path: 'companies',
-    title: `기업 분석 목록 | ${SITE}`,
-    description: '미국 상장기업을 섹터·시가총액·등락률로 검색하고 비교해보세요.',
-  },
-  {
-    path: 'about',
-    title: `소개 | ${SITE}`,
-    description: 'Bboggl이 어떤 사이트인지, 데이터를 어떻게 만드는지 소개합니다.',
-  },
-  {
-    path: 'privacy',
-    title: `개인정보처리방침 | ${SITE}`,
-    description: 'Bboggl이 수집하는 개인정보와 이용 목적을 안내합니다.',
-  },
-  ...COMPANIES.map((c) => ({
-    path: `companies/${c.ticker}`,
-    title: `${c.nameKo}(${c.ticker}) 분석 | ${SITE}`,
-    description: `${c.nameKo}(${c.ticker}) — ${c.summary}`,
-  })),
-];
-
 function escapeHtml(str) {
   return str
     .replace(/&/g, '&amp;')
     .replace(/"/g, '&quot;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
+}
+
+function stripHtml(html) {
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function cardUrl(ticker, type) {
+  const fileName = `${ticker}_${type}_card.html`;
+  return `${SUPABASE_URL}/storage/v1/object/public/${encodeURIComponent(BUCKET)}/${encodeURIComponent(fileName)}`;
+}
+
+async function fetchCardText(ticker, type) {
+  if (!SUPABASE_URL) return null;
+  try {
+    const res = await fetch(cardUrl(ticker, type));
+    if (!res.ok) return null;
+    const text = stripHtml(await res.text());
+    return text.length > 0 ? text : null;
+  } catch {
+    return null;
+  }
+}
+
+/** 기업 상세 페이지용 — 실제 분석 카드 3종의 텍스트를 가져와 크롤러가 읽을 수 있는 본문을 만든다. */
+async function buildCompanyArticle(c) {
+  const texts = await Promise.all(CARD_TYPES.map((ct) => fetchCardText(c.ticker, ct.type)));
+  const sections = CARD_TYPES.map((ct, i) => {
+    const text = texts[i];
+    if (!text) return '';
+    return `<section><h2>${escapeHtml(ct.label)}</h2><p>${escapeHtml(text)}</p></section>`;
+  })
+    .filter(Boolean)
+    .join('\n');
+
+  return `<article><h1>${escapeHtml(c.nameKo)} (${escapeHtml(c.ticker)})</h1><p>${escapeHtml(c.summary)}</p>${sections}</article>`;
+}
+
+/** 홈/목록 페이지용 — 전체 기업을 간단한 리스트 형태의 실제 텍스트로 나열한다. */
+function buildIndexArticle() {
+  const items = COMPANIES.map(
+    (c) => `<li><strong>${escapeHtml(c.nameKo)} (${escapeHtml(c.ticker)})</strong> — ${escapeHtml(c.summary)}</li>`,
+  ).join('\n');
+  return `<article><h1>Bboggl — 미국 상장기업 10-K 기반 분석</h1><ul>${items}</ul></article>`;
 }
 
 function injectMeta(html, { title, description }) {
@@ -101,14 +163,51 @@ function injectMeta(html, { title, description }) {
     );
 }
 
+function injectContent(html, articleHtml) {
+  return html.replace('<div id="root"></div>', `<div id="root">${articleHtml}</div>`);
+}
+
+const routes = [
+  {
+    path: 'companies',
+    title: `기업 분석 목록 | ${SITE}`,
+    description: '미국 상장기업을 섹터·시가총액·등락률로 검색하고 비교해보세요.',
+    article: buildIndexArticle(),
+  },
+  {
+    path: 'about',
+    title: `소개 | ${SITE}`,
+    description: 'Bboggl이 어떤 사이트인지, 데이터를 어떻게 만드는지 소개합니다.',
+  },
+  {
+    path: 'privacy',
+    title: `개인정보처리방침 | ${SITE}`,
+    description: 'Bboggl이 수집하는 개인정보와 이용 목적을 안내합니다.',
+  },
+  ...(await Promise.all(
+    COMPANIES.map(async (c) => ({
+      path: `companies/${c.ticker}`,
+      title: `${c.nameKo}(${c.ticker}) 분석 | ${SITE}`,
+      description: `${c.nameKo}(${c.ticker}) — ${c.summary}`,
+      article: await buildCompanyArticle(c),
+    })),
+  )),
+];
+
 for (const route of routes) {
-  const html = injectMeta(template, route);
+  let html = injectMeta(template, route);
+  if (route.article) html = injectContent(html, route.article);
   const outDir = join(distDir, route.path);
   mkdirSync(outDir, { recursive: true });
   writeFileSync(join(outDir, 'index.html'), html, 'utf-8');
 }
 
 console.log(`[generate-meta-shells] ${routes.length}개 라우트에 정적 메타 shell을 생성했어요.`);
+
+// 홈(/)은 별도 라우트 shell이 아니라 dist/index.html 그 자체이므로 여기서 직접 본문을 넣어준다.
+const homeHtml = injectContent(template, buildIndexArticle());
+writeFileSync(templatePath, homeHtml, 'utf-8');
+console.log('[generate-meta-shells] 홈(dist/index.html)에도 실제 기업 리스트 본문을 넣었어요.');
 
 // sitemap.xml — 검색엔진이 필요한 라우트를 알아서 찾도록 안내한다.
 // 마이페이지는 로그인 필요 + noindex라 제외한다.

@@ -31,6 +31,7 @@ const COMPANY_META: CompanyMeta[] = [
     ],
     story: '아이폰 매출 비중이 서서히 낮아지는 대신 서비스 부문이 꾸준히 성장하며 이익의 질이 개선되고 있습니다.',
     lastAnalyzedAt: '2026-08-10',
+    latestTenKYear: 2025,
   },
   {
     ticker: 'TSLA',
@@ -49,6 +50,7 @@ const COMPANY_META: CompanyMeta[] = [
     ],
     story: '차량 마진 압박이 지속되는 가운데 에너지 저장 사업부가 새로운 성장축으로 부상하고 있습니다.',
     lastAnalyzedAt: '2026-08-12',
+    latestTenKYear: 2025,
   },
   {
     ticker: 'MSFT',
@@ -67,6 +69,7 @@ const COMPANY_META: CompanyMeta[] = [
     ],
     story: 'Azure 성장률이 둔화 우려를 뚫고 AI 관련 워크로드 덕분에 재가속하는 모습을 보이고 있습니다.',
     lastAnalyzedAt: '2026-08-14',
+    latestTenKYear: 2025,
   },
   {
     ticker: 'NVDA',
@@ -85,6 +88,7 @@ const COMPANY_META: CompanyMeta[] = [
     ],
     story: '데이터센터 매출 비중이 90%를 넘어서며 사실상 AI 인프라 기업으로 완전히 재편됐습니다.',
     lastAnalyzedAt: '2026-08-15',
+    latestTenKYear: 2025,
   },
   {
     ticker: 'AMZN',
@@ -103,6 +107,7 @@ const COMPANY_META: CompanyMeta[] = [
     ],
     story: 'AWS와 광고 부문의 높은 마진이 이커머스의 낮은 마진을 상쇄하며 전체 이익률을 끌어올리고 있습니다.',
     lastAnalyzedAt: '2026-08-11',
+    latestTenKYear: 2025,
   },
   {
     ticker: 'VST',

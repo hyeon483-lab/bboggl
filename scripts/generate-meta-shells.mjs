@@ -40,6 +40,14 @@ const COMPANIES = [
   { ticker: 'NVDA', nameKo: '엔비디아', summary: 'AI 학습·추론용 GPU와 데이터센터 플랫폼을 주력으로 하는 반도체 설계 기업' },
   { ticker: 'AMZN', nameKo: '아마존', summary: '이커머스와 클라우드(AWS), 광고를 함께 운영하는 멀티 사업 플랫폼 기업' },
   { ticker: 'VST', nameKo: '비스트라 에너지', summary: '발전·소매 전력 판매를 아우르는 미국 최대 규모의 통합 전력 회사' },
+  { ticker: 'PLTR', nameKo: '팔란티어', summary: '정부·기업 고객에게 AI 기반 데이터 분석 플랫폼을 공급하는 소프트웨어 기업' },
+  { ticker: 'UNH', nameKo: '유나이티드헬스케어', summary: '건강보험(UnitedHealthcare)과 헬스케어 서비스(Optum)를 함께 운영하는 미국 최대 건강보험사' },
+  { ticker: 'SNPS', nameKo: '시놉시스', summary: '반도체 설계에 필수적인 EDA(전자설계자동화) 소프트웨어를 만드는 칩 설계 도구 기업' },
+  { ticker: 'RSG', nameKo: '리퍼블릭 서비스', summary: '쓰레기 수거·매립·재활용을 담당하는 미국 2위 규모의 폐기물 처리 기업' },
+  { ticker: 'KO', nameKo: '코카콜라', summary: '전 세계 200여개 국가에서 탄산음료를 중심으로 한 음료 브랜드를 판매하는 소비재 기업' },
+  { ticker: 'GOOGL', nameKo: '알파벳(구글)', summary: '검색·유튜브 광고를 핵심 수익원으로 클라우드와 AI 사업을 함께 키우는 인터넷 플랫폼 기업' },
+  { ticker: 'AVGO', nameKo: '브로드컴', summary: '반도체와 인프라 소프트웨어(VMware)를 함께 판매하는 반도체·소프트웨어 복합 기업' },
+  { ticker: 'META', nameKo: '메타', summary: '페이스북·인스타그램 광고를 핵심 수익원으로 AI와 메타버스에 대규모로 투자하는 소셜미디어 기업' },
 ];
 
 const routes = [

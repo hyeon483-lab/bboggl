@@ -62,7 +62,9 @@ export default function CompanyCard({ company }: CompanyCardProps) {
 
         <div className={styles.meta}>
           <span>시가총액 ${company.marketCapB.toLocaleString()}B</span>
-          <span>{company.lastAnalyzedAt} 분석</span>
+          <span>
+            {company.latestTenKYear ? `${company.latestTenKYear}년도 10-K 기준` : `${company.lastAnalyzedAt} 분석`}
+          </span>
         </div>
       </div>
     </Card>

@@ -4,7 +4,9 @@ export type Sector =
   | '반도체'
   | '전력·에너지'
   | '이커머스'
-  | '헬스케어';
+  | '헬스케어'
+  | '환경·폐기물'
+  | '소비재';
 
 export interface FinancialStat {
   label: string;
@@ -29,4 +31,6 @@ export interface Company {
   financials: FinancialStat[];
   story: string;
   lastAnalyzedAt: string;
+  /** 업로드된 분석 자료에서 인용한 가장 최신 10-K 회계연도. 실제 분석 자료가 있는 기업만 채운다. */
+  latestTenKYear?: number;
 }

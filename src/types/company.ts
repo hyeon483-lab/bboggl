@@ -7,7 +7,9 @@ export type Sector =
   | '헬스케어'
   | '환경·폐기물'
   | '소비재'
-  | '금융';
+  | '금융'
+  | '오일가스'
+  | '외식·프랜차이즈';
 
 export interface FinancialStat {
   label: string;

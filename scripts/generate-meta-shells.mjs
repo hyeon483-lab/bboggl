@@ -79,6 +79,9 @@ const COMPANIES = [
   { ticker: 'AVGO', nameKo: '브로드컴', summary: '반도체와 인프라 소프트웨어(VMware)를 함께 판매하는 반도체·소프트웨어 복합 기업' },
   { ticker: 'META', nameKo: '메타', summary: '페이스북·인스타그램 광고를 핵심 수익원으로 AI와 메타버스에 대규모로 투자하는 소셜미디어 기업' },
   { ticker: 'JPM', nameKo: 'JP모건체이스', summary: '예금·대출 이자수익과 투자은행·자산관리 수수료를 함께 운영하는 미국 최대 상업은행' },
+  { ticker: 'CVX', nameKo: '쉐브론', summary: '원유·천연가스 채굴부터 정제·판매까지 아우르는 미국의 오일가스 슈퍼메이저' },
+  { ticker: 'PEP', nameKo: '펩시코', summary: '감자칩·과자와 탄산음료 브랜드를 전 세계 소매망에 공급하는 글로벌 식음료 기업' },
+  { ticker: 'MCD', nameKo: '맥도날드', summary: '전 세계 매장 부지와 브랜드를 가맹점에 빌려주고 임대료·로열티를 받는 글로벌 패스트푸드 프랜차이즈 기업' },
 ];
 
 function escapeHtml(str) {

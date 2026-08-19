@@ -129,4 +129,9 @@
   .change {
     justify-content: flex-start;
   }
+  .chartCard,
+  .financeCard,
+  .tabsCard {
+    padding: 16px;
+  }
 }

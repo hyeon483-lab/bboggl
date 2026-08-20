@@ -82,6 +82,8 @@ const COMPANIES = [
   { ticker: 'CVX', nameKo: '쉐브론', summary: '원유·천연가스 채굴부터 정제·판매까지 아우르는 미국의 오일가스 슈퍼메이저' },
   { ticker: 'PEP', nameKo: '펩시코', summary: '감자칩·과자와 탄산음료 브랜드를 전 세계 소매망에 공급하는 글로벌 식음료 기업' },
   { ticker: 'MCD', nameKo: '맥도날드', summary: '전 세계 매장 부지와 브랜드를 가맹점에 빌려주고 임대료·로열티를 받는 글로벌 패스트푸드 프랜차이즈 기업' },
+  { ticker: 'DE', nameKo: '존디어', summary: '트랙터·건설장비를 만들어 팔고 금융·부품수리로 반복 매출을 내는 세계적 농기계 제조사' },
+  { ticker: 'O', nameKo: '리얼티인컴', summary: '편의점·마트 등 상업용 건물을 장기 임대하고 매달 배당을 지급하는 순임대 리츠' },
 ];
 
 function escapeHtml(str) {

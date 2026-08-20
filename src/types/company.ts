@@ -9,7 +9,9 @@ export type Sector =
   | '소비재'
   | '금융'
   | '오일가스'
-  | '외식·프랜차이즈';
+  | '외식·프랜차이즈'
+  | '산업재'
+  | '리츠';
 
 export interface FinancialStat {
   label: string;

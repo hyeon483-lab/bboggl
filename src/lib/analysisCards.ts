@@ -14,19 +14,28 @@ function cardUrl(ticker: string, type: CardType) {
 }
 
 /**
- * 분석 카드는 스킬이 매번 새로 생성해 업로드하는 독립된 HTML(자체 <style> 포함, 980px 안팎의
- * 데스크톱 폭 기준 디자인)이라 우리가 소스를 직접 고칠 수 없다. 좁은 화면(iframe 자체 폭 기준)에서
- * 큰 헤드라인 문장이 몇 단어만에 줄바꿈되고, 2~3단 그리드나 막대그래프 라벨이 카드 폭을 넘어가
- * 잘려 보이는 문제가 있어 — 카드 공통 디자인 시스템(company-decoder/story-reader/price-decoder
- * 스킬이 공유하는 클래스명)을 겨냥한 모바일 오버라이드 스타일을 카드 HTML에 주입해 넣는다.
+ * 분석 카드는 스킬이 매번 새로 생성해 업로드하는 독립된 HTML(자체 <style> 포함, 880~980px 안팎의
+ * 데스크톱 폭 기준 디자인)이라 우리가 소스를 직접 고칠 수 없고, 티커마다 마크업/클래스명도 제각각이다
+ * (company_decoder/price_decoder/story_reader 세 스킬이 매번 새로 생성하므로 공유되는 클래스 계약이
+ * 없다). 그래서 특정 클래스명을 겨냥한 CSS만으로는 다음 티커에서 또 깨질 수 있다.
+ *
+ * 시행착오로 확인한 것:
+ * - 카드 대부분은 스킬이 자체적으로 넣어둔 반응형 규칙(예: flex-wrap + min-width, 640px 그리드
+ *   브레이크포인트)만으로 이미 잘 접힌다. 예전에 넣었던 `* { min-width: 0 !important }`는 이 내장
+ *   flex-wrap 로직을 깨서(각 flex 아이템이 줄바꿈 대신 끝없이 쪼그라들어 글자 단위로 줄바꿈되는
+ *   증상, 예: META의 "돈 버는 구조" 흐름도) 오히려 있던 반응형을 망가뜨렸다 — 삭제했다.
+ * - 실제로 카드 자체에 대응이 없는 경우는 다열(多列) <table>이다. 연도별 재무 테이블처럼 6~7개
+ *   열이 있으면 폰트를 아무리 줄여도 262px 안에 안 들어가고, 스크롤 컨테이너가 없어 화면 밖으로
+ *   잘려 보인다(META에서 확인). 그래서 모든 table을 가로 스크롤 가능한 wrapper로 감싸는 스크립트를
+ *   주입한다 — 넘치지 않는 테이블은 아무 영향이 없고, 넘치는 테이블만 (잘리는 대신) 스와이프로 볼
+ *   수 있게 된다.
  */
 function withMobileOverrides(html: string): string {
   const mobileStyle = `<style>
 @media (max-width: 600px) {
-  * { min-width: 0 !important; }
   html, body { overflow-x: hidden !important; }
   .card, .conclusion { max-width: 100% !important; box-sizing: border-box !important; }
-  .card { padding: 18px 16px 26px !important; overflow-x: auto !important; }
+  .card { padding: 18px 16px 26px !important; }
   .hero p, .conclusion p { font-size: 17px !important; line-height: 1.5 !important; }
   .conclusion { padding: 16px !important; }
   h1 { font-size: 19px !important; }
@@ -38,10 +47,50 @@ function withMobileOverrides(html: string): string {
   .bar-row { flex-wrap: wrap !important; }
   .bar-label { width: 76px !important; font-size: 10.5px !important; }
   .bar-val { width: 46px !important; font-size: 10.5px !important; }
+  img, svg { max-width: 100% !important; height: auto !important; }
   table { font-size: 10.5px !important; }
   th, td { padding: 4px 4px !important; }
+  .__mscroll {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    margin: 10px -2px !important;
+    padding: 0 2px 6px !important;
+  }
+  .__mscroll table { margin: 0 !important; }
+  .__mscroll::-webkit-scrollbar { height: 5px; }
+  .__mscroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.25); border-radius: 3px; }
+  .__mhint {
+    display: block;
+    font-size: 10.5px;
+    color: var(--ink2, #898781);
+    text-align: right;
+    margin-top: -6px;
+    margin-bottom: 8px;
+  }
 }
-</style>`;
+</style>
+<script>
+(function () {
+  function fit() {
+    if (document.documentElement.clientWidth > 600) return;
+    document.querySelectorAll('table').forEach(function (t) {
+      if (t.closest('.__mscroll')) return;
+      var box = document.createElement('div');
+      box.className = '__mscroll';
+      t.parentNode.insertBefore(box, t);
+      box.appendChild(t);
+      if (t.scrollWidth > box.clientWidth + 2) {
+        var hint = document.createElement('small');
+        hint.className = '__mhint';
+        hint.textContent = '↔ 좌우로 스크롤해서 더 볼 수 있어요';
+        box.parentNode.insertBefore(hint, box.nextSibling);
+      }
+    });
+  }
+  if (document.readyState === 'complete') fit();
+  else window.addEventListener('load', fit);
+})();
+</script>`;
 
   return html.includes('</head>') ? html.replace('</head>', `${mobileStyle}</head>`) : mobileStyle + html;
 }

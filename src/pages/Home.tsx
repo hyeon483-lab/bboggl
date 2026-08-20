@@ -49,6 +49,9 @@ export default function Home() {
         <p className={styles.subtitle}>
           AI가 정리한 공시자료를 바탕으로 기업의 핵심을 요약해드려요.
         </p>
+        <p className={styles.mobileHint}>
+          PC, 노트북, 태블릿으로 접속하시면 더욱 최적화된 화면으로 정보를 확인하실 수 있습니다.
+        </p>
         <form className={styles.heroSearch} onSubmit={handleSearch}>
           <Input
             icon="search"

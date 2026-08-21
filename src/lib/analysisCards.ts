@@ -34,10 +34,11 @@ function withMobileOverrides(html: string): string {
   const mobileStyle = `<style>
 @media (max-width: 600px) {
   html, body { overflow-x: hidden !important; }
+  body { padding-left: 6px !important; padding-right: 6px !important; }
   .card, .conclusion { max-width: 100% !important; box-sizing: border-box !important; }
-  .card { padding: 18px 16px 26px !important; }
+  .card { padding: 18px 8px 26px !important; }
   .hero p, .conclusion p { font-size: 17px !important; line-height: 1.5 !important; }
-  .conclusion { padding: 16px !important; }
+  .conclusion { padding: 12px !important; }
   h1 { font-size: 19px !important; }
   h2 { font-size: 16px !important; }
   .grid2, .grid3, .diffgrid { grid-template-columns: 1fr !important; gap: 10px !important; }

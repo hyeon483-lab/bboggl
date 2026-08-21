@@ -130,8 +130,10 @@
     justify-content: flex-start;
   }
   .chartCard,
-  .financeCard,
-  .tabsCard {
+  .financeCard {
     padding: 16px;
+  }
+  .tabsCard {
+    padding: 16px 6px;
   }
 }

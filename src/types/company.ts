@@ -11,7 +11,8 @@ export type Sector =
   | '오일가스'
   | '외식·프랜차이즈'
   | '산업재'
-  | '리츠';
+  | '리츠'
+  | '사이버보안';
 
 export interface FinancialStat {
   label: string;

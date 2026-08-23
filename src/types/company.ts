@@ -12,7 +12,8 @@ export type Sector =
   | '외식·프랜차이즈'
   | '산업재'
   | '리츠'
-  | '사이버보안';
+  | '사이버보안'
+  | '지주회사';
 
 export interface FinancialStat {
   label: string;

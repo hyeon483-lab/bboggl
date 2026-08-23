@@ -89,6 +89,11 @@ const COMPANIES = [
   { ticker: 'PANW', nameKo: '팔로알토 네트웍스', summary: '기업과 정부기관의 네트워크를 해커로부터 지켜주는 보안 소프트웨어를 만들어 매달 구독료를 받는 사이버보안 기업' },
   { ticker: 'GS', nameKo: '골드만삭스', summary: '큰 기업과 정부, 자산가의 자금 조달·투자를 도와주고 수수료·트레이딩 마진·운용보수를 받는 대형 투자은행' },
   { ticker: 'PLD', nameKo: '프롤로지스', summary: '아마존 같은 기업들이 물건을 보관할 대형 물류창고를 지어 매달 임대료를 받는 산업용 부동산 리츠' },
+  { ticker: 'CSCO', nameKo: '시스코', summary: '네트워크 스위치·라우터에 보안·협업 소프트웨어 구독을 결합해 판매하는 인터넷 인프라 장비 기업' },
+  { ticker: 'BRK-B', nameKo: '버크셔해서웨이', summary: '보험료로 조달한 자금(플로트)을 주식·기업 인수에 재투자해 불려나가는 워런 버핏의 복합 지주회사' },
+  { ticker: 'SBUX', nameKo: '스타벅스', summary: '원두를 직접 로스팅해 전 세계 매장에서 판매하고 마트 병커피 로열티로도 수익을 내는 글로벌 커피 프랜차이즈' },
+  { ticker: 'WM', nameKo: '웨이스트매니지먼트', summary: '가정과 기업의 쓰레기를 수거해 자체 매립지·재활용시설에서 처리하는 북미 최대 환경 서비스 기업' },
+  { ticker: 'CDNS', nameKo: '케이던스', summary: '반도체 칩 설계·검증에 필수적인 EDA 소프트웨어를 라이선스로 제공하는 반도체 설계 도구 기업' },
 ];
 
 function escapeHtml(str) {
@@ -115,8 +120,9 @@ function stripHtml(html) {
     .trim();
 }
 
+// 카드 업로드 파일명은 티커에서 특수문자를 뺀 형태를 쓴다 (예: BRK-B → BRKB 파일).
 function cardUrl(ticker, type) {
-  const fileName = `${ticker}_${type}_card.html`;
+  const fileName = `${ticker.replace(/[^A-Za-z0-9]/g, '')}_${type}_card.html`;
   return `${SUPABASE_URL}/storage/v1/object/public/${encodeURIComponent(BUCKET)}/${encodeURIComponent(fileName)}`;
 }
 

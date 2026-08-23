@@ -3,8 +3,9 @@ const BUCKET = 'Corporate analysis data (upload)';
 
 export type CardType = 'company_decoder' | 'price_decoder' | 'story_reader';
 
+/** 카드 업로드 파일명은 티커에서 특수문자를 뺀 형태를 쓴다 (예: BRK-B → BRKB 파일). */
 function cardFileName(ticker: string, type: CardType) {
-  return `${ticker}_${type}_card.html`;
+  return `${ticker.replace(/[^A-Za-z0-9]/g, '')}_${type}_card.html`;
 }
 
 function cardUrl(ticker: string, type: CardType) {
@@ -37,6 +38,10 @@ function withMobileOverrides(html: string): string {
   body { padding-left: 6px !important; padding-right: 6px !important; }
   .card, .conclusion { max-width: 100% !important; box-sizing: border-box !important; }
   .card { padding: 18px 8px 26px !important; }
+  /* 카드마다 마크업이 제각각이라, section 태그 자체에 좌우 padding을 박아둔 경우가 있다
+     (예: O 카드의 section{padding:24px 32px}) — 카드 바깥 padding과 이중으로 겹치므로
+     태그 단위로 좌우만 안전하게 0으로 만든다. 상하 padding/margin은 건드리지 않는다. */
+  section { padding-left: 0 !important; padding-right: 0 !important; }
   .hero p, .conclusion p { font-size: 17px !important; line-height: 1.5 !important; }
   .conclusion { padding: 12px !important; }
   h1 { font-size: 19px !important; }

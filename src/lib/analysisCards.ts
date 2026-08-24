@@ -30,6 +30,12 @@ function cardUrl(ticker: string, type: CardType) {
  *   잘려 보인다(META에서 확인). 그래서 모든 table을 가로 스크롤 가능한 wrapper로 감싸는 스크립트를
  *   주입한다 — 넘치지 않는 테이블은 아무 영향이 없고, 넘치는 테이블만 (잘리는 대신) 스와이프로 볼
  *   수 있게 된다.
+ * - 30개 종목 × 3종 카드를 전부 자동 렌더링해서 실측했더니(사람이 눈으로 하나씩 넘겨보지 않고),
+ *   초기에 생성된 카드 일부(KO, AVGO)는 바깥 래퍼 클래스명이 `.card`가 아니라 `.sheet`였다 —
+ *   그 카드들만 데스크톱 padding(44px씩)이 그대로 남아 본문이 카드 폭의 76%로 눌려 있었다.
+ *   클래스명은 스킬이 실행마다 새로 짓기 때문에 다음 카드는 또 다른 이름을 쓸 수 있다. 그래서
+ *   이름을 더 나열하는 대신, "body의 첫 번째 자식 = 그 카드의 바깥 래퍼"라는 구조적 사실 하나에
+ *   기대는 스크립트로 클래스명과 무관하게 항상 잡히게 했다.
  */
 function withMobileOverrides(html: string): string {
   const mobileStyle = `<style>
@@ -77,7 +83,28 @@ function withMobileOverrides(html: string): string {
 </style>
 <script>
 (function () {
+  // body의 첫 번째 엘리먼트 자식 = 그 카드의 바깥 래퍼(.card/.sheet/그 외 무엇이든).
+  // 클래스명을 나열하는 대신 이 구조적 위치 하나로 항상 찾아서, 데스크톱용 padding이
+  // 그대로 남아있으면(12px 넘으면) 좌우만 줄인다. max-width도 100%로 맞춰 잘리지 않게 한다.
+  function normalizeRoot() {
+    if (document.documentElement.clientWidth > 600) return;
+    var root = document.body.firstElementChild;
+    while (root && (root.tagName === 'SCRIPT' || root.tagName === 'STYLE')) {
+      root = root.nextElementSibling;
+    }
+    if (!root) return;
+    var cs = window.getComputedStyle(root);
+    var pl = parseFloat(cs.paddingLeft) || 0;
+    var pr = parseFloat(cs.paddingRight) || 0;
+    if (pl > 12 || pr > 12) {
+      root.style.setProperty('padding-left', '8px', 'important');
+      root.style.setProperty('padding-right', '8px', 'important');
+    }
+    root.style.setProperty('max-width', '100%', 'important');
+    root.style.setProperty('box-sizing', 'border-box', 'important');
+  }
   function fit() {
+    normalizeRoot();
     if (document.documentElement.clientWidth > 600) return;
     document.querySelectorAll('table').forEach(function (t) {
       if (t.closest('.__mscroll')) return;

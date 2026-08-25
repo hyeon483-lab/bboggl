@@ -94,6 +94,9 @@ const COMPANIES = [
   { ticker: 'SBUX', nameKo: '스타벅스', summary: '원두를 직접 로스팅해 전 세계 매장에서 판매하고 마트 병커피 로열티로도 수익을 내는 글로벌 커피 프랜차이즈' },
   { ticker: 'WM', nameKo: '웨이스트매니지먼트', summary: '가정과 기업의 쓰레기를 수거해 자체 매립지·재활용시설에서 처리하는 북미 최대 환경 서비스 기업' },
   { ticker: 'CDNS', nameKo: '케이던스', summary: '반도체 칩 설계·검증에 필수적인 EDA 소프트웨어를 라이선스로 제공하는 반도체 설계 도구 기업' },
+  { ticker: 'TSM', nameKo: 'TSMC', summary: '애플·엔비디아 등 팹리스 기업의 설계도대로 최첨단 반도체를 위탁생산하는 세계 최대 파운드리' },
+  { ticker: 'AMD', nameKo: 'AMD', summary: 'AI 가속기·서버 CPU를 직접 설계해 TSMC 등에 생산을 맡기는 팹리스 반도체 기업' },
+  { ticker: 'CVS', nameKo: 'CVS헬스', summary: '보험(Aetna)·처방약관리(Caremark)·약국을 한 회사 안에 모두 갖춰 한 고객에게 두 번 수익을 내는 미국 최대 헬스케어 복합기업' },
 ];
 
 function escapeHtml(str) {

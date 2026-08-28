@@ -14,7 +14,7 @@ export default function MyPage() {
   const { user, profile, loading } = useAuth();
   const { items: activity, loading: activityLoading } = useRecentActivity();
 
-  useDocumentMeta({ title: '마이페이지 | Bboggl', noindex: true });
+  useDocumentMeta({ title: '마이페이지 | Analysis10k', noindex: true });
 
   if (loading) return null;
 

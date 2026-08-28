@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="container">
         <div className={styles.row}>
           <div className={styles.brandGroup}>
-            <span className={styles.brand}>🍲 Bboggl</span>
+            <span className={styles.brand}>📈 Analysis10k</span>
             <span className="text-sub">미국 상장기업 분석 리포트</span>
           </div>
           <nav className={styles.links}>

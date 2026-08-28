@@ -27,8 +27,8 @@ export default function Home() {
   const navigate = useNavigate();
 
   useDocumentMeta({
-    title: 'Bboggl — 미국 상장기업 10-K 기반 분석',
-    description: 'AI가 정리한 10-K 공시자료를 바탕으로 미국 상장기업의 핵심을 한눈에 요약해드립니다.',
+    title: 'Analysis10k — 미국 주식, 10-K 기반으로 한눈에 핵심요약',
+    description: 'AI가 정리한 10k 공시자료를 바탕으로 미국 주식의 핵심 정보를 요약해드려요.',
   });
 
   const recentCompanies = [...mockCompanies]
@@ -44,10 +44,10 @@ export default function Home() {
     <div>
       <section className={styles.hero}>
         <h1 className={styles.title}>
-          미국 상장기업, <span>10-K 기반</span>으로 한눈에
+          미국 주식, <span>10-K 기반</span>으로 한눈에 핵심요약
         </h1>
         <p className={styles.subtitle}>
-          AI가 정리한 공시자료를 바탕으로 기업의 핵심을 요약해드려요.
+          AI가 정리한 10k 공시자료를 바탕으로 미국 주식의 핵심 정보를 요약해드려요.
         </p>
         <p className={styles.mobileHint}>
           PC, 노트북, 태블릿으로 접속하시면 더욱 최적화된 화면으로 정보를 확인하실 수 있습니다.

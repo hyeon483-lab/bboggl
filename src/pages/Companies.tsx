@@ -13,7 +13,7 @@ export default function Companies() {
     useCompanyFilter(mockCompanies, searchParams.get('q') ?? '');
 
   useDocumentMeta({
-    title: '기업 분석 목록 | Bboggl',
+    title: '기업 분석 목록 | Analysis10k',
     description: '미국 상장기업을 섹터·시가총액·등락률로 검색하고 비교해보세요.',
   });
 

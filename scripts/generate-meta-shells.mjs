@@ -50,7 +50,7 @@ function loadDotEnvLocal() {
 loadDotEnvLocal();
 
 const template = readFileSync(templatePath, 'utf-8');
-const SITE = 'Bboggl';
+const SITE = 'Analysis10k';
 const SITE_URL = 'https://10kanalysiswise.vercel.app';
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const BUCKET = 'Corporate analysis data (upload)';
@@ -160,7 +160,7 @@ function buildIndexArticle() {
   const items = COMPANIES.map(
     (c) => `<li><strong>${escapeHtml(c.nameKo)} (${escapeHtml(c.ticker)})</strong> — ${escapeHtml(c.summary)}</li>`,
   ).join('\n');
-  return `<article><h1>Bboggl — 미국 상장기업 10-K 기반 분석</h1><ul>${items}</ul></article>`;
+  return `<article><h1>${SITE} — 미국 주식, 10-K 기반으로 한눈에 핵심요약</h1><ul>${items}</ul></article>`;
 }
 
 function injectMeta(html, { title, description }) {
@@ -197,12 +197,12 @@ const routes = [
   {
     path: 'about',
     title: `소개 | ${SITE}`,
-    description: 'Bboggl이 어떤 사이트인지, 데이터를 어떻게 만드는지 소개합니다.',
+    description: `${SITE}이 어떤 사이트인지, 데이터를 어떻게 만드는지 소개합니다.`,
   },
   {
     path: 'privacy',
     title: `개인정보처리방침 | ${SITE}`,
-    description: 'Bboggl이 수집하는 개인정보와 이용 목적을 안내합니다.',
+    description: `${SITE}이 수집하는 개인정보와 이용 목적을 안내합니다.`,
   },
   ...(await Promise.all(
     COMPANIES.map(async (c) => ({

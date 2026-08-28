@@ -47,7 +47,7 @@ export default function Header() {
     <header className={styles.header}>
       <div className={`container ${styles.bar}`}>
         <Link to="/" className={styles.logo}>
-          🍲 <span>Bboggl</span>
+          📈 <span>Analysis10k</span>
         </Link>
 
         <nav className={styles.nav}>

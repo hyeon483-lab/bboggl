@@ -21,7 +21,7 @@ export default function CompanyDetail() {
   const { isFavorite, pending, toggle } = useFavorite(ticker, company?.nameKo ?? ticker);
 
   useDocumentMeta({
-    title: company ? `${company.nameKo}(${company.ticker}) 분석 | Bboggl` : 'Bboggl',
+    title: company ? `${company.nameKo}(${company.ticker}) 분석 | Analysis10k` : 'Analysis10k',
     description: company
       ? `${company.nameKo}(${company.ticker}) — ${company.summary}`
       : undefined,

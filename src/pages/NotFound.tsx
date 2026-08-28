@@ -4,7 +4,7 @@ import { useDocumentMeta } from '../hooks/useDocumentMeta';
 import styles from './NotFound.module.css';
 
 export default function NotFound() {
-  useDocumentMeta({ title: '페이지를 찾을 수 없어요 | Bboggl', noindex: true });
+  useDocumentMeta({ title: '페이지를 찾을 수 없어요 | Analysis10k', noindex: true });
 
   return (
     <div className={styles.wrap}>

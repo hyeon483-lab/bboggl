@@ -3,8 +3,8 @@ import styles from './StaticPage.module.css';
 
 export default function Privacy() {
   useDocumentMeta({
-    title: '개인정보처리방침 | Bboggl',
-    description: 'Bboggl이 수집하는 개인정보와 이용 목적을 안내합니다.',
+    title: '개인정보처리방침 | Analysis10k',
+    description: 'Analysis10k이 수집하는 개인정보와 이용 목적을 안내합니다.',
   });
 
   return (
@@ -14,7 +14,7 @@ export default function Privacy() {
 
       <section className={styles.section}>
         <p>
-          Bboggl(이하 &quot;사이트&quot;)은 개인이 운영하는 서비스로, 사업자로 등록된 법인이 아닙니다.
+          Analysis10k(이하 &quot;사이트&quot;)은 개인이 운영하는 서비스로, 사업자로 등록된 법인이 아닙니다.
           이 문서는 사이트가 어떤 정보를 수집하고 어떻게 사용하는지 안내합니다.
         </p>
       </section>

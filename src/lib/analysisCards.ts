@@ -36,6 +36,13 @@ function cardUrl(ticker: string, type: CardType) {
  *   클래스명은 스킬이 실행마다 새로 짓기 때문에 다음 카드는 또 다른 이름을 쓸 수 있다. 그래서
  *   이름을 더 나열하는 대신, "body의 첫 번째 자식 = 그 카드의 바깥 래퍼"라는 구조적 사실 하나에
  *   기대는 스크립트로 클래스명과 무관하게 항상 잡히게 했다.
+ * - `.chart`라는 이름도 카드마다 완전히 다른 두 컴포넌트를 가리킨다: (A) 세로 막대 그래프 —
+ *   자식 `.bar`가 인라인 `style="height:XX%"`로 그려지므로 부모에 고정 높이가 반드시 있어야
+ *   퍼센트가 풀린다. (B) 가로 막대 목록(`.bar-row`를 세로로 쌓은 것) — 원래 CSS에 고정 높이가
+ *   없고 행 개수만큼 자연스럽게 늘어나야 한다. `.chart { height: 130px }`를 무조건 걸면 (B)
+ *   유형에서 4번째 행부터 카드 박스 밖으로 넘쳐 아래 문단과 텍스트가 겹쳐 보였다(UNH 역DCF 카드에서
+ *   확인). 그래서 이제 CSS로 무조건 걸지 않고, 그 안에 %-height 자식이 실제로 있는 (A) 유형일 때만
+ *   스크립트로 고정 높이를 준다.
  */
 function withMobileOverrides(html: string): string {
   const mobileStyle = `<style>
@@ -53,9 +60,6 @@ function withMobileOverrides(html: string): string {
   h1 { font-size: 19px !important; }
   h2 { font-size: 16px !important; }
   .grid2, .grid3, .diffgrid { grid-template-columns: 1fr !important; gap: 10px !important; }
-  /* .chart 막대는 자식 .bar가 인라인 height:XX%로 그려지므로 부모 높이를 auto로 바꾸면 안 된다 —
-     너비만 줄이고(줄바꿈 없이 좁게 압축) 높이는 고정값을 유지한다. */
-  .chart { height: 130px !important; padding: 0 !important; gap: 8px !important; }
   .bar-row { flex-wrap: wrap !important; }
   .bar-label { width: 76px !important; font-size: 10.5px !important; }
   .bar-val { width: 46px !important; font-size: 10.5px !important; }
@@ -103,9 +107,40 @@ function withMobileOverrides(html: string): string {
     root.style.setProperty('max-width', '100%', 'important');
     root.style.setProperty('box-sizing', 'border-box', 'important');
   }
+  // .chart는 카드마다 완전히 다른 두 컴포넌트를 가리킬 수 있다: 세로 막대 그래프(자식 .bar가
+  // 인라인 height:%로 그려져 고정 높이가 꼭 필요함) 또는 .bar-row를 세로로 쌓은 가로 막대 목록
+  // (원래 고정 높이가 없고 행 수만큼 자연스럽게 늘어나야 함). 후자에 고정 높이를 걸면 넘친 행이
+  // 카드 박스 밖으로 삐져나와 아래 내용과 겹친다. %-height 자식이 실제로 있을 때만 고정한다.
+  function normalizeCharts() {
+    document.querySelectorAll('.chart').forEach(function (chart) {
+      var hasPercentHeightChild = false;
+      chart.querySelectorAll('[style*="height"]').forEach(function (el) {
+        if (/height\\s*:\\s*[\\d.]+%/.test(el.getAttribute('style') || '')) hasPercentHeightChild = true;
+      });
+      if (hasPercentHeightChild) {
+        chart.style.setProperty('height', '130px', 'important');
+        chart.style.setProperty('padding', '0', 'important');
+        chart.style.setProperty('gap', '8px', 'important');
+      }
+    });
+  }
+  // 배지·라벨 같은 짧은 텍스트에 white-space:nowrap을 걸어둔 카드가 있다(예: 상단 출처 배지).
+  // 좁은 화면에서 body가 overflow-x:hidden이라 스크롤 없이 그냥 화면 밖으로 잘려서 안 보이게
+  // 된다. 실제로 뷰포트보다 넓어지는 경우에만(숫자처럼 원래 짧은 nowrap은 그대로 두고) 줄바꿈을
+  // 허용한다.
+  function normalizeNowrap() {
+    var vw = document.documentElement.clientWidth;
+    document.querySelectorAll('*').forEach(function (el) {
+      if (window.getComputedStyle(el).whiteSpace === 'nowrap' && el.scrollWidth > vw) {
+        el.style.setProperty('white-space', 'normal', 'important');
+      }
+    });
+  }
   function fit() {
     normalizeRoot();
     if (document.documentElement.clientWidth > 600) return;
+    normalizeCharts();
+    normalizeNowrap();
     document.querySelectorAll('table').forEach(function (t) {
       if (t.closest('.__mscroll')) return;
       var box = document.createElement('div');

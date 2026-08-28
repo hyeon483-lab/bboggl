@@ -2,7 +2,7 @@ export const config = { runtime: 'edge' };
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const TO_EMAIL = 'chriskevin0707@gmail.com';
-const FROM_EMAIL = 'Bboggl 문의 <onboarding@resend.dev>';
+const FROM_EMAIL = 'Analysis10k 문의 <onboarding@resend.dev>';
 const MAX_MESSAGE_LENGTH = 2000;
 
 const CONTACT_LABELS: Record<string, string> = {
@@ -56,7 +56,7 @@ export default async function handler(req: Request): Promise<Response> {
     body: JSON.stringify({
       from: FROM_EMAIL,
       to: TO_EMAIL,
-      subject: `[Bboggl 문의] ${typeLabel}`,
+      subject: `[Analysis10k 문의] ${typeLabel}`,
       html: `
         <p><b>유형:</b> ${escapeHtml(typeLabel)}</p>
         <p><b>회신 이메일:</b> ${escapeHtml(replyEmail || '(입력 안 함)')}</p>

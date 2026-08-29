@@ -97,6 +97,9 @@ const COMPANIES = [
   { ticker: 'TSM', nameKo: 'TSMC', summary: '애플·엔비디아 등 팹리스 기업의 설계도대로 최첨단 반도체를 위탁생산하는 세계 최대 파운드리' },
   { ticker: 'AMD', nameKo: 'AMD', summary: 'AI 가속기·서버 CPU를 직접 설계해 TSMC 등에 생산을 맡기는 팹리스 반도체 기업' },
   { ticker: 'CVS', nameKo: 'CVS헬스', summary: '보험(Aetna)·처방약관리(Caremark)·약국을 한 회사 안에 모두 갖춰 한 고객에게 두 번 수익을 내는 미국 최대 헬스케어 복합기업' },
+  { ticker: 'JNJ', nameKo: '존슨앤드존슨', summary: '처방약과 의료기기를 만들어 병원·약국에 판매하고 건강보험이 비용을 상환하는 세계 최대 헬스케어 기업' },
+  { ticker: 'XOM', nameKo: '엑슨모빌', summary: '원유·가스를 채굴해 정유·화학 제품으로 만들어 파는 세계 최대 규모의 통합 에너지 기업' },
+  { ticker: 'OXY', nameKo: '옥시덴탈페트롤리엄', summary: '퍼미안 분지와 중동 유전에서 원유·가스를 뽑아 시장가로 판매하는, 워런 버핏이 최대주주인 석유 탐사생산 기업' },
 ];
 
 function escapeHtml(str) {

@@ -155,13 +155,59 @@ async function buildCompanyArticle(c) {
   return `<article><h1>${escapeHtml(c.nameKo)} (${escapeHtml(c.ticker)})</h1><p>${escapeHtml(c.summary)}</p>${sections}</article>`;
 }
 
-/** 홈/목록 페이지용 — 전체 기업을 간단한 리스트 형태의 실제 텍스트로 나열한다. */
-function buildIndexArticle() {
+/** 기업 목록용 — 전체 기업을 간단한 리스트 형태의 실제 텍스트로 나열한다. */
+function buildCompaniesListArticle() {
   const items = COMPANIES.map(
     (c) => `<li><strong>${escapeHtml(c.nameKo)} (${escapeHtml(c.ticker)})</strong> — ${escapeHtml(c.summary)}</li>`,
   ).join('\n');
   return `<article><h1>${SITE} — 미국 주식, 10-K 기반으로 한눈에 핵심요약</h1><ul>${items}</ul></article>`;
 }
+
+/** 홈페이지용 — 소개 문단 + 전체 기업 리스트. 기업목록 페이지와 내용이 겹치지 않도록 소개 문단을 따로 둔다. */
+function buildHomeArticle() {
+  const items = COMPANIES.map(
+    (c) => `<li><strong>${escapeHtml(c.nameKo)} (${escapeHtml(c.ticker)})</strong> — ${escapeHtml(c.summary)}</li>`,
+  ).join('\n');
+  return `<article>
+<h1>${SITE} — 미국 주식, 10-K 기반으로 한눈에 핵심요약</h1>
+<p>${SITE}는 미국 상장기업의 SEC 공시자료(10-K, 10-Q, DEF 14A)와 어닝콜 트랜스크립트를 AI가 직접 읽고 정리해서, 복잡한 재무제표를 몇 분 안에 이해할 수 있는 분석 카드로 보여드리는 사이트예요. 각 기업 페이지에서는 &quot;핵심 요약&quot;(이 회사가 어떻게 돈을 버는지), &quot;스토리&quot;(최근 2~3년간 무엇이 달라졌는지), &quot;역DCF 가격 판독&quot;(지금 주가가 어떤 성장을 전제하고 있는지) 세 가지 각도로 같은 기업을 다시 읽을 수 있습니다.</p>
+<p>모든 수치와 서술에는 10-K·10-Q·DEF 14A의 페이지 번호를 함께 표기해서, 요약만 보고 끝내지 않고 원문을 직접 확인하고 싶을 때 출처를 그대로 따라갈 수 있게 만들었어요. 주가와 시가총액은 매 거래일 마감 후 하루 한 번 자동으로 갱신됩니다.</p>
+<ul>${items}</ul>
+</article>`;
+}
+
+const ABOUT_ARTICLE = `<article>
+<h1>${SITE} 소개</h1>
+<p>${SITE}은 미국 상장기업의 공시자료(10-K)를 바탕으로, 복잡한 재무제표를 몇 분 안에 이해할 수 있는 요약 카드로 정리해서 보여주는 개인 프로젝트예요.</p>
+<h2>어떻게 만들어지나요</h2>
+<p>기업 분석 카드(&quot;핵심 요약&quot;, &quot;스토리&quot;, &quot;역DCF 가격 판독&quot;)는 실제 SEC 10-K·10-Q·DEF 14A 공시자료와 어닝콜 트랜스크립트를 바탕으로 페이지 출처까지 밝혀서 작성돼요. 현재 ${COMPANIES.length}개 기업의 분석이 올라와 있고, 다른 기업들도 순차적으로 채워나가고 있어요.</p>
+<p>주가와 시가총액은 매 거래일 마감 후 하루 한 번 자동으로 갱신돼요.</p>
+<h2>운영자</h2>
+<p>개인이 만들고 운영하는 사이트예요. 사업자로 등록된 법인이 아니며, 문의는 이메일(chriskevin0707@gmail.com)로 받고 있어요. 헤더의 문의 아이콘으로 &quot;분석기업 추가&quot;나 &quot;업데이트 요청&quot;도 보낼 수 있어요.</p>
+<h2>투자 관련 안내</h2>
+<p>${SITE}의 콘텐츠는 정보 제공 목적일 뿐 투자 권유가 아니에요. 투자 판단과 그 결과에 대한 책임은 투자자 본인에게 있습니다. 자세한 데이터 출처와 예시 데이터 범위는 개인정보처리방침과 각 페이지 하단 안내를 참고해주세요.</p>
+</article>`;
+
+const PRIVACY_ARTICLE = `<article>
+<h1>개인정보처리방침</h1>
+<p>시행일: 2026년 8월 16일</p>
+<p>${SITE}(이하 &quot;사이트&quot;)은 개인이 운영하는 서비스로, 사업자로 등록된 법인이 아닙니다. 이 문서는 사이트가 어떤 정보를 수집하고 어떻게 사용하는지 안내합니다.</p>
+<h2>1. 수집하는 정보</h2>
+<p>계정: 이메일, 비밀번호(암호화 저장), 표시 이름 — 회원가입 시. 서비스 이용 기록: 즐겨찾기한 기업, 조회한 기업·일시 — 로그인 상태로 서비스 이용 시. 문의 내용: 문의 내용, 회신용 이메일(선택 입력) — &quot;분석기업 추가&quot;·&quot;업데이트 요청&quot; 제출 시.</p>
+<h2>2. 이용 목적</h2>
+<p>로그인, 즐겨찾기, 최근 활동 등 마이페이지 기능 제공. 문의 내용 확인 및 회신. 서비스 개선을 위한 이용 현황 파악.</p>
+<h2>3. 제3자 서비스</h2>
+<p>사이트는 아래 외부 서비스를 이용해 개인정보를 처리합니다. Supabase — 계정 인증, 프로필·활동 기록 데이터베이스 저장. Resend — 문의 폼 내용을 운영자 이메일로 전달. Vercel — 웹사이트 호스팅 및 접속 로그 처리.</p>
+<p>향후 Google AdSense를 통해 광고를 게재할 경우, Google이 맞춤 광고 제공을 위해 쿠키를 사용할 수 있습니다. Google의 광고 관련 개인정보 처리 방식은 Google 광고 정책 페이지(https://policies.google.com/technologies/ads)에서 확인할 수 있습니다.</p>
+<h2>4. 보관 기간</h2>
+<p>계정 정보는 회원 탈퇴 요청 시까지 보관됩니다. 문의 내용은 이메일로 전달될 뿐 별도 데이터베이스에 저장하지 않습니다.</p>
+<h2>5. 이용자의 권리</h2>
+<p>마이페이지에서 프로필 정보를 직접 조회·수정할 수 있습니다. 계정 삭제나 개인정보 열람·삭제를 원하시면 이메일로 요청해주세요.</p>
+<h2>6. 문의처</h2>
+<p>개인정보 관련 문의: chriskevin0707@gmail.com</p>
+<h2>7. 변경 고지</h2>
+<p>이 방침이 변경되는 경우 이 페이지에 업데이트된 내용을 게시합니다.</p>
+</article>`;
 
 function injectMeta(html, { title, description }) {
   const safeTitle = escapeHtml(title);
@@ -192,17 +238,19 @@ const routes = [
     path: 'companies',
     title: `기업 분석 목록 | ${SITE}`,
     description: '미국 상장기업을 섹터·시가총액·등락률로 검색하고 비교해보세요.',
-    article: buildIndexArticle(),
+    article: buildCompaniesListArticle(),
   },
   {
     path: 'about',
     title: `소개 | ${SITE}`,
     description: `${SITE}이 어떤 사이트인지, 데이터를 어떻게 만드는지 소개합니다.`,
+    article: ABOUT_ARTICLE,
   },
   {
     path: 'privacy',
     title: `개인정보처리방침 | ${SITE}`,
     description: `${SITE}이 수집하는 개인정보와 이용 목적을 안내합니다.`,
+    article: PRIVACY_ARTICLE,
   },
   ...(await Promise.all(
     COMPANIES.map(async (c) => ({
@@ -225,7 +273,7 @@ for (const route of routes) {
 console.log(`[generate-meta-shells] ${routes.length}개 라우트에 정적 메타 shell을 생성했어요.`);
 
 // 홈(/)은 별도 라우트 shell이 아니라 dist/index.html 그 자체이므로 여기서 직접 본문을 넣어준다.
-const homeHtml = injectContent(template, buildIndexArticle());
+const homeHtml = injectContent(template, buildHomeArticle());
 writeFileSync(templatePath, homeHtml, 'utf-8');
 console.log('[generate-meta-shells] 홈(dist/index.html)에도 실제 기업 리스트 본문을 넣었어요.');
 

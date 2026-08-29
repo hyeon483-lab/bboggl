@@ -10,5 +10,5 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   display: block;
-  transition: height 0.15s;
+  overflow: hidden;
 }

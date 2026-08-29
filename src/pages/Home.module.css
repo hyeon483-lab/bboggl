@@ -35,6 +35,20 @@
   font-size: 15px;
 }
 
+.intro {
+  max-width: 720px;
+  margin: 0 auto 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.intro p {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: var(--text);
+}
+
 .statsRow {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

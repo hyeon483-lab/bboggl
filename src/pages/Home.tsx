@@ -62,6 +62,21 @@ export default function Home() {
         </form>
       </section>
 
+      <section className={styles.intro}>
+        <p>
+          Analysis10k는 미국 상장기업의 SEC 공시자료(10-K, 10-Q, DEF 14A)와 어닝콜 트랜스크립트를 AI가
+          직접 읽고 정리해서, 복잡한 재무제표를 몇 분 안에 이해할 수 있는 분석 카드로 보여드리는
+          사이트예요. 각 기업 페이지에서는 &quot;핵심 요약&quot;(이 회사가 어떻게 돈을 버는지),
+          &quot;스토리&quot;(최근 2~3년간 무엇이 달라졌는지), &quot;역DCF 가격 판독&quot;(지금 주가가
+          어떤 성장을 전제하고 있는지) 세 가지 각도로 같은 기업을 다시 읽을 수 있습니다.
+        </p>
+        <p>
+          모든 수치와 서술에는 10-K·10-Q·DEF 14A의 페이지 번호를 함께 표기해서, 요약만 보고 끝내지 않고
+          원문을 직접 확인하고 싶을 때 출처를 그대로 따라갈 수 있게 만들었어요. 주가와 시가총액은 매
+          거래일 마감 후 하루 한 번 자동으로 갱신됩니다.
+        </p>
+      </section>
+
       <div className={styles.statsRow}>
         {MARKET_STATS.map((stat) => (
           <Card key={stat.label}>

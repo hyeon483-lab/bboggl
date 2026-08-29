@@ -37,7 +37,9 @@
 
 .intro {
   max-width: 720px;
-  margin: 0 auto 40px;
+  margin: 48px auto 0;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   gap: 12px;

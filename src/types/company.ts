@@ -13,7 +13,8 @@ export type Sector =
   | '산업재'
   | '리츠'
   | '사이버보안'
-  | '지주회사';
+  | '지주회사'
+  | '농업';
 
 export interface FinancialStat {
   label: string;

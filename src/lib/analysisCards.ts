@@ -14,12 +14,26 @@ function cardUrl(ticker: string, type: CardType) {
   )}`;
 }
 
+/**
+ * 카드는 자체 <style>에 `:root { --ink: ...; }` 식으로 색상 변수를 선언한다 — 일반 문서에 넣을 걸
+ * 전제로 만들어진 관행이다. 그런데 이 스타일시트가 Shadow Root 안에 들어가면 `:root`는 그 안의
+ * 어떤 요소와도 매칭되지 않는다(진짜 document.documentElement와도, 섀도 트리 안 요소와도 매칭 안
+ * 됨) — 스펙상 `:root`는 섀도 트리 스코프에서 그냥 죽은 선택자다. 그 결과 `var(--ink)`가 전부
+ * 빈 값으로 풀려서, 예를 들어 `background: var(--ink)` + `color:#fff`인 hero 섹션이 배경은
+ * 투명, 글자는 흰색이 되어 흰 바탕 위에서 통째로 안 보이게 된다(VST company_decoder 카드에서
+ * 실측). 섀도 트리 전체에 변수를 뿌리는 스펙상 올바른 선택자는 `:host`이므로, 카드 HTML을 쓰기
+ * 전에 `:root`를 `:host`로 치환한다.
+ */
+function fixShadowRootVars(html: string): string {
+  return html.replace(/:root(?![\w-])/g, ':host');
+}
+
 /** 해당 티커의 분석 카드 HTML을 가져온다. 아직 업로드되지 않았으면 null. */
 export async function fetchAnalysisCard(ticker: string, type: CardType): Promise<string | null> {
   try {
     const res = await fetch(cardUrl(ticker, type));
     if (!res.ok) return null;
-    return await res.text();
+    return fixShadowRootVars(await res.text());
   } catch {
     return null;
   }

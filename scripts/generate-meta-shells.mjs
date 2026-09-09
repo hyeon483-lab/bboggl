@@ -221,9 +221,10 @@ const PRIVACY_ARTICLE = `<article>
 <p>이 방침이 변경되는 경우 이 페이지에 업데이트된 내용을 게시합니다.</p>
 </article>`;
 
-function injectMeta(html, { title, description }) {
+function injectMeta(html, { title, description, url }) {
   const safeTitle = escapeHtml(title);
   const safeDescription = escapeHtml(description);
+  const safeUrl = escapeHtml(url);
 
   return html
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${safeTitle}</title>`)
@@ -238,7 +239,18 @@ function injectMeta(html, { title, description }) {
     .replace(
       /<meta\s+property="og:description"\s+content="[^"]*"\s*\/?>/,
       `<meta property="og:description" content="${safeDescription}" />`,
-    );
+    )
+    .replace(
+      /<meta\s+property="og:url"\s+content="[^"]*"\s*\/?>/,
+      `<meta property="og:url" content="${safeUrl}" />`,
+    )
+    .replace(
+      /<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/,
+      `<link rel="canonical" href="${safeUrl}" />`,
+    )
+    // JSON-LD WebSite schema also hardcodes the homepage URL in the template — without this,
+    // every route's structured data claims to *be* the homepage, same root cause as canonical/og:url above.
+    .replace(/"url":\s*"[^"]*"/, `"url": "${safeUrl}"`);
 }
 
 function injectContent(html, articleHtml) {
@@ -248,18 +260,21 @@ function injectContent(html, articleHtml) {
 const routes = [
   {
     path: 'companies',
+    url: `${SITE_URL}/companies`,
     title: `기업 분석 목록 | ${SITE}`,
     description: '미국 상장기업을 섹터·시가총액·등락률로 검색하고 비교해보세요.',
     article: buildCompaniesListArticle(),
   },
   {
     path: 'about',
+    url: `${SITE_URL}/about`,
     title: `소개 | ${SITE}`,
     description: `${SITE}이 어떤 사이트인지, 데이터를 어떻게 만드는지 소개합니다.`,
     article: ABOUT_ARTICLE,
   },
   {
     path: 'privacy',
+    url: `${SITE_URL}/privacy`,
     title: `개인정보처리방침 | ${SITE}`,
     description: `${SITE}이 수집하는 개인정보와 이용 목적을 안내합니다.`,
     article: PRIVACY_ARTICLE,
@@ -267,6 +282,7 @@ const routes = [
   ...(await Promise.all(
     COMPANIES.map(async (c) => ({
       path: `companies/${c.ticker}`,
+      url: `${SITE_URL}/companies/${c.ticker}`,
       title: `${c.nameKo}(${c.ticker}) 분석 | ${SITE}`,
       description: `${c.nameKo}(${c.ticker}) — ${c.summary}`,
       article: await buildCompanyArticle(c),
@@ -282,10 +298,18 @@ for (const route of routes) {
   writeFileSync(join(outDir, 'index.html'), html, 'utf-8');
 }
 
-console.log(`[generate-meta-shells] ${routes.length}개 라우트에 정적 메타 shell을 생성했어요.`);
+console.log(`[generate-meta-shells] ${routes.length}개 라우트에 정적 메타 shell을 생성했어요 (canonical/og:url 라우트별로 분리).`);
 
-// 홈(/)은 별도 라우트 shell이 아니라 dist/index.html 그 자체이므로 여기서 직접 본문을 넣어준다.
-const homeHtml = injectContent(template, buildHomeArticle());
+// 홈(/)은 별도 라우트 shell이 아니라 dist/index.html 그 자체이므로 여기서 직접 메타+본문을 넣어준다.
+// (canonical/og:url은 이미 템플릿에 홈 URL로 박혀있지만, JSON-LD의 "url" 필드까지 명시적으로 맞춰준다.)
+const homeHtml = injectContent(
+  injectMeta(template, {
+    title: `${SITE} — 미국 주식, 10-K 기반으로 한눈에 핵심요약`,
+    description: 'AI가 정리한 10k 공시자료를 바탕으로 미국 주식의 핵심 정보를 요약해드려요.',
+    url: `${SITE_URL}/`,
+  }),
+  buildHomeArticle(),
+);
 writeFileSync(templatePath, homeHtml, 'utf-8');
 console.log('[generate-meta-shells] 홈(dist/index.html)에도 실제 기업 리스트 본문을 넣었어요.');
 
